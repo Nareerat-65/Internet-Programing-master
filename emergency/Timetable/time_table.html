@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ตารางเวลารถพยาบาล</title>
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.4/index.global.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.4/index.global.min.js"></script>
+    <link rel="stylesheet" href="style_test.css">
+</head>
+
+<body>
+    <!-- Navigation bar -->
+    <nav>
+    </nav>
+
+
+    <!-- Title -->
+    <div class="title">
+        <h1>ตารางเวลารถพยาบาล</h1>
+    </div>
+
+    <div id="calendar"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'timeGridWeek', // แสดงผลแบบรายสัปดาห์
+                editable: true, // เปิดใช้งานการแก้ไขกิจกรรม
+                selectable: true, // อนุญาตให้เลือกช่วงเวลาในปฏิทิน
+                headerToolbar: {
+                    left: 'prev,next today', // ปุ่มเลื่อนดูวัน/สัปดาห์
+                    center: 'title', // ชื่อปฏิทิน
+                    right: 'timeGridWeek,timeGridDay' // ปุ่มเปลี่ยนมุมมอง
+                },
+                events: [
+                    { title: 'Meeting', start: '2025-01-05T10:00:00', end: '2025-01-05T11:00:00' },
+                    { title: 'Lunch Break', start: '2025-01-06T12:00:00', end: '2025-01-06T13:00:00' }
+                ],
+                eventClick: function (info) {
+                    // เมื่อคลิกที่กิจกรรม
+                    var confirmDelete = confirm(`คุณต้องการลบรายการนี้ไหม?: "${info.event.title}"?`);
+                    if (confirmDelete) {
+                        info.event.remove(); // ลบกิจกรรม
+                    }
+                },
+                select: function (info) {
+                    // เมื่อเลือกช่วงเวลา
+                    var title = prompt('ใส่ชื่อรายารของคุณ:');
+                    if (title) {
+                        calendar.addEvent({
+                            title: title,
+                            start: info.start,
+                            end: info.end,
+                            allDay: info.allDay
+                        });
+                    }
+                    calendar.unselect(); // ยกเลิกการเลือก
+                }
+            });
+            calendar.render();
+        });
+    </script> 
+</body>
+
+</html>

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style_car_report.css">
+
+    <script src="./script_car_report.js"></script>
+
+    <title>รายงานสภาพรถ</title>
+
+</head>
+
+<body>
+    <nav>
+        <ul class="menu">
+            <li><a href="car_report.html">รายงานสภาพรถ</a></li>
+            <li><a href="..\repair\repair.html">การซ่อมอุปกรณ์และรถพยาบาล</a></li>
+        </ul>
+    </nav>
+
+    <div class="header">
+        <h1 class="title">รายงานสภาพรถ</h1>
+    </div>
+
+    <form id="carReportForm">
+        <div class="car-info">
+            <div class="form">
+                <label for="level">ระดับรถ</label>
+                <select id="level" required>
+                    <option value="" disabled selected>ระบุระดับรถ</option>
+                    <option value="ระดับ 1">ระดับ 1</option>
+                    <option value="ระดับ 2">ระดับ 2</option>
+                    <option value="ระดับ 3">ระดับ 3</option>
+                </select>
+            </div>
+            <div class="form">
+                <label for="number">ทะเบียนรถ</label>
+                <select id="number" required>
+                    <option value="" disabled selected>ระบุทะเบียนรถ</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- รายงานเกี่ยวกับรถ -->
+        <div class="car_topic">
+            <h3>รถ</h3>
+            <div class="car_report">
+                <div class="form-group">
+                    <label for="clean">ความสะอาด</label>
+                    <input type="radio" name="clean" value="yes" id="clean-yes" onclick="toggleDropdown('clean')"
+                        required> พร้อม
+                    <input type="radio" name="clean" value="no" id="clean-no" onclick="toggleDropdown('clean')"
+                        required> ไม่พร้อม
+                    <select id="clean-dropdown" disabled onchange="updateDropdown('clean')" required>
+                        <option value="" disabled selected>สาเหตุ</option>
+                        <option value="option1">มีกลิ่นอับ</option>
+                        <option value="option2">มีคราบสกปรก</option>
+                        <option value="other">อื่นๆ</option>
+                    </select>
+                    <input type="text" id="clean-other" placeholder="ระบุ" disabled oninput="updateOtherField('clean')"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label for="engine">เครื่องยนต์</label>
+                    <input type="radio" name="engine" value="yes" id="engine-yes" onclick="toggleDropdown('engine')"
+                        required> พร้อม
+                    <input type="radio" name="engine" value="no" id="engine-no" onclick="toggleDropdown('engine')"
+                        required> ไม่พร้อม
+                    <select id="engine-dropdown" disabled onchange="updateDropdown('engine')" required>
+                        <option value="" disabled selected>สาเหตุ</option>
+                        <option value="option1">ระเบิด</option>
+                        <option value="option2">ไหม้</option>
+                        <option value="other">อื่นๆ</option>
+                    </select>
+                    <input type="text" id="engine-other" placeholder="ระบุ" disabled
+                        oninput="updateOtherField('engine')" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="wheel">ล้อรถ</label>
+                    <input type="radio" name="wheel" value="yes" id="wheel-yes" onclick="toggleDropdown('wheel')"
+                        required> พร้อม
+                    <input type="radio" name="wheel" value="no" id="wheel-no" onclick="toggleDropdown('wheel')"
+                        required> ไม่พร้อม
+                    <select id="wheel-dropdown" disabled onchange="updateDropdown('wheel')" required>
+                        <option value="" disabled selected>สาเหตุ</option>
+                        <option value="option1">ยางรั่ว</option>
+                        <option value="option2">ดอกยางหมด</option>
+                        <option value="other">อื่นๆ</option>
+                    </select>
+                    <input type="text" id="wheel-other" placeholder="ระบุ" disabled oninput="updateOtherField('wheel')"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label for="door">ประตูรถ</label>
+                    <input type="radio" name="door" value="yes" id="door-yes" onclick="toggleDropdown('door')" required>
+                    พร้อม
+                    <input type="radio" name="door" value="no" id="door-no" onclick="toggleDropdown('door')" required>
+                    ไม่พร้อม
+                    <select id="door-dropdown" disabled onchange="updateDropdown('door')" required>
+                        <option value="" disabled selected>สาเหตุ</option>
+                        <option value="option1">เปิดไม่ได้</option>
+                        <option value="option2">ประตูหลุด</option>
+                        <option value="other">อื่นๆ</option>
+                    </select>
+                    <input type="text" id="door-other" placeholder="ระบุ" disabled oninput="updateOtherField('door')"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label for="brake">เบรค</label>
+                    <input type="radio" name="brake" value="yes" id="brake-yes" onclick="toggleDropdown('brake')"
+                        required> พร้อม
+                    <input type="radio" name="brake" value="no" id="brake-no" onclick="toggleDropdown('brake')"
+                        required> ไม่พร้อม
+                    <select id="brake-dropdown" disabled onchange="updateDropdown('brake')" required>
+                        <option value="" disabled selected>สาเหตุ</option>
+                        <option value="option1">สายเบรคขาด</option>
+                        <option value="option2">เบรคไหม้</option>
+                        <option value="other">อื่นๆ</option>
+                    </select>
+                    <input type="text" id="brake-other" placeholder="ระบุ" disabled oninput="updateOtherField('brake')"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label for="light">ไฟภายในรถ</label>
+                    <input type="radio" name="light" value="yes" id="light-yes" onclick="toggleDropdown('light')"
+                        required> พร้อม
+                    <input type="radio" name="light" value="no" id="light-no" onclick="toggleDropdown('light')"
+                        required> ไม่พร้อม
+                    <select id="light-dropdown" disabled onchange="updateDropdown('light')" required>
+                        <option value="" disabled selected>สาเหตุ</option>
+                        <option value="option1">เปิดไม่ติด</option>
+                        <option value="option2">หลอดไฟแตก</option>
+                        <option value="other">อื่นๆ</option>
+                    </select>
+                    <input type="text" id="light-other" placeholder="ระบุ" disabled oninput="updateOtherField('light')"
+                        required>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- รายงานเกี่ยวกับอุปกรณ์บนรถ -->
+        <div class="kit_topic">
+            <h3>อุปกรณ์การแพทย์</h3>
+            <div class="car_report">
+                <div class="form-group">
+                    <label for="AED">AED</label>
+                    <input type="radio" name="AED" value="yes" id="AED-yes" onclick="toggleDropdown('AED')" required>
+                    พร้อม
+                    <input type="radio" name="AED" value="no" id="AED-no" onclick="toggleDropdown('AED')" required>
+                    ไม่พร้อม
+                    <select id="AED-dropdown" disabled onchange="updateDropdown('AED')" required>
+                        <option value="" disabled selected>สาเหตุ</option>
+                        <option value="option1">ชำรุด</option>
+                        <option value="option2">หมดอายุ</option>
+                        <option value="other">อื่นๆ</option>
+                    </select>
+                    <input type="text" id="AED-other" placeholder="ระบุ" disabled oninput="updateOtherField('AED')"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label for="bed">เตียง</label>
+                    <input type="radio" name="bed" value="yes" id="bed-yes" onclick="toggleDropdown('bed')" required>
+                    พร้อม
+                    <input type="radio" name="bed" value="no" id="bed-no" onclick="toggleDropdown('bed')" required>
+                    ไม่พร้อม
+                    <select id="bed-dropdown" disabled onchange="updateDropdown('bed')" required>
+                        <option value="" disabled selected>สาเหตุ</option>
+                        <option value="option1">ชำรุด</option>
+                        <option value="option2">หมดอายุ</option>
+                        <option value="other">อื่นๆ</option>
+                    </select>
+                    <input type="text" id="bed-other" placeholder="ระบุ" disabled oninput="updateOtherField('bed')"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label for="ven">เครื่องช่วยหายใจ</label>
+                    <input type="radio" name="ven" value="yes" id="ven-yes" onclick="toggleDropdown('ven')" required>
+                    พร้อม
+                    <input type="radio" name="ven" value="no" id="ven-no" onclick="toggleDropdown('ven')" required>
+                    ไม่พร้อม
+                    <select id="ven-dropdown" disabled onchange="updateDropdown('ven')" required>
+                        <option value="" disabled selected>สาเหตุ</option>
+                        <option value="option1">ชำรุด</option>
+                        <option value="option2">หมดอายุ</option>
+                        <option value="other">อื่นๆ</option>
+                    </select>
+                    <input type="text" id="ven-other" placeholder="ระบุ" disabled oninput="updateOtherField('ven')"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label for="Splint">เฝือกลม</label>
+                    <input type="radio" name="Splint" value="yes" id="Splint-yes" onclick="toggleDropdown('Splint')" required>
+                    พร้อม
+                    <input type="radio" name="Splint" value="no" id="Splint-no" onclick="toggleDropdown('Splint')" required>
+                    ไม่พร้อม
+                    <select id="Splint-dropdown" disabled onchange="updateDropdown('Splint')" required>
+                        <option value="" disabled selected>สาเหตุ</option>
+                        <option value="option1">ชำรุด</option>
+                        <option value="option2">หมดอายุ</option>
+                        <option value="other">อื่นๆ</option>
+                    </select>
+                    <input type="text" id="Splint-other" placeholder="ระบุ" disabled oninput="updateOtherField('Splint')"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label for="O2">ถังออกซิเจน</label>
+                    <input type="radio" name="O2" value="yes" id="O2-yes" onclick="toggleDropdown('O2')" required> พร้อม
+                    <input type="radio" name="O2" value="no" id="O2-no" onclick="toggleDropdown('O2')" required>
+                    ไม่พร้อม
+                    <select id="O2-dropdown" disabled onchange="updateDropdown('O2')" required>
+                        <option value="" disabled selected>สาเหตุ</option>
+                        <option value="option1">ชำรุด</option>
+                        <option value="option2">หมดอายุ</option>
+                        <option value="other">อื่นๆ</option>
+                    </select>
+                    <input type="text" id="O2-other" placeholder="ระบุ" disabled oninput="updateOtherField('O2')"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label for="firstaid">อุปกรณ์ปฐมพยาบาล</label>
+                    <input type="radio" name="firstaid" value="yes" id="firstaid-yes"
+                        onclick="toggleDropdown('firstaid')" required> พร้อม
+                    <input type="radio" name="firstaid" value="no" id="firstaid-no" onclick="toggleDropdown('firstaid')"
+                        required> ไม่พร้อม
+                    <select id="firstaid-dropdown" disabled onchange="updateDropdown('firstaid')" required>
+                        <option value="" disabled selected>สาเหตุ</option>
+                        <option value="option1">ชำรุด</option>
+                        <option value="option2">หมดอายุ</option>
+                        <option value="other">อื่นๆ</option>
+                    </select>
+                    <input type="text" id="firstaid-other" placeholder="ระบุ" disabled
+                        oninput="updateOtherField('firstaid')" required>
+                </div>
+            </div>
+        </div>
+
+        <!-- ผู้รายงานและปุ่มส่ง -->
+        <div class="reporter">
+            <h4>ผู้รายงาน : นายชัชพล มีแสง </h4>
+            <button type="submit" class="save">บันทึก</button>
+            <button type="button" style="background-color: #E4AE9F;" onclick="resetForm()">ยกเลิก</button>
+        </div>
+    </form>
+</body>
+</html>
