@@ -55,38 +55,33 @@ $id_steff = 2; // รหัสพนักงานซ่อม (ค่าเร
 $status_re = 'รอดำเนินการ'; // สถานะของรายการซ่อม
 
 // เพิ่มข้อมูลลงในตาราง car_report
-$stmt1 = $conn->prepare("INSERT INTO car_report (clean_status, clean_reason, engine_status, engine_reason, wheel_status, wheel_reason, door_status, door_reason, brake_status, brake_reason, light_status, light_reason) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-$stmt1->bind_param("ssssssssssss", $clean_status, $clean_reason, $engine_status, $engine_reason, $wheel_status, $wheel_reason, $door_status, $door_reason, $brake_status, $brake_reason, $light_status, $light_reason);
+$stmt1 = $conn->prepare("INSERT INTO car_report (date_car_report,ambulance_id,repair_staff_id,clean_status, clean_reason, engine_status, engine_reason, wheel_status, wheel_reason, door_status, door_reason, brake_status, brake_reason, light_status, light_reason) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+$stmt1->bind_param("siissssssssssss",$current_date,$registration_car,$id_steff,$clean_status, $clean_reason, $engine_status, $engine_reason, $wheel_status, $wheel_reason, $door_status, $door_reason, $brake_status, $brake_reason, $light_status, $light_reason);
 $stmt1->execute();
-$id_car_report = $conn->insert_id;
+
 
 // เพิ่มข้อมูลลงในตาราง equipment_report
-$stmt2 = $conn->prepare("INSERT INTO equipment_report (aed_status, aed_reason, ven_status, ven_reason, o2_status, o2_reason, pressure_status, pressure_reason, heart_rate_status, heart_rate_reason, bed_status, bed_reason, stretcher_status, stretcher_reason, firstaid_status, firstaid_reason, splint_status, splint_reason) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-$stmt2->bind_param("ssssssssssssssssss", $AED_status, $AED_reason, $ven_status, $ven_reason, $O2_status, $O2_reason, $pressure_status, $pressure_reason, $heart_rate_status, $heart_rate_reason, $bed_status, $bed_reason, $stretcher_status, $stretcher_reason, $firstaid_status, $firstaid_reason, $splint_status, $splint_reason);
+$stmt2 = $conn->prepare("INSERT INTO equipment_report (date_equipment_report,ambulance_id,repair_staff_id,aed_status, aed_reason, ven_status, ven_reason, o2_status, o2_reason, pressure_status, pressure_reason, heart_rate_status, heart_rate_reason, bed_status, bed_reason, stretcher_status, stretcher_reason, firstaid_status, firstaid_reason, splint_status, splint_reason) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+$stmt2->bind_param("siissssssssssssssssss", $current_date,$registration_car,$id_steff,$AED_status, $AED_reason, $ven_status, $ven_reason, $O2_status, $O2_reason, $pressure_status, $pressure_reason, $heart_rate_status, $heart_rate_reason, $bed_status, $bed_reason, $stretcher_status, $stretcher_reason, $firstaid_status, $firstaid_reason, $splint_status, $splint_reason);
 $stmt2->execute();
-$id_equipment_report = $conn->insert_id;
+
 
 // เพิ่มข้อมูลลงในตาราง repair หากพบรายการที่ "ไม่พร้อม"
 foreach ($_POST["status"] as $section_title => $status) {
     if ($status == "ไม่พร้อม") {
         $repair_reason = $_POST["reason"][$section_title] ?? '';
         $type = in_array($section_title, ['เครื่องAED', 'เครื่องช่วยหายใจ', 'ถังออกซิเจน', 'เครื่องวัดความดัน', 'เครื่องวัดชีพจร', 'เตียงพยาบาล', 'เปลสนาม', 'อุปกรณ์ปฐมพยาบาล', 'อุปกรณ์การดาม']) ? 'อุปกรณ์ทางการแพทย์' : 'รถพยาบาล';
-        $stmt3 = $conn->prepare("INSERT INTO repair (ambulance_id, repair_staff_id, repair_date, repair_type, repair_item, repair_reason, repair_status) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        $stmt3 = $conn->prepare("INSERT INTO repair (ambulance_id, repair_staff_id, repair_date, repair_type, repairing, repair_reason, repair_status) VALUES (?, ?, ?, ?, ?, ?, ?)");
         $stmt3->bind_param("iisssss", $registration_car, $id_steff, $current_date, $type, $section_title, $repair_reason, $status_re);
         $stmt3->execute();
         $stmt3->close();
     }
 }
 
-// เพิ่มข้อมูลลงในตาราง ambulance_report
-$stmt = $conn->prepare("INSERT INTO ambulance_report (date_ambulance_report, ambulance_id, repair_staff_id, id_car_report, id_equipment_report) VALUES (?, ?, ?, ?, ?)");
-$stmt->bind_param("siiii", $current_date, $registration_car, $id_steff, $id_car_report, $id_equipment_report);
-$stmt->execute();
 header("Location: car_report_success.php");
 exit();
 
 // ปิด statement และการเชื่อมต่อฐานข้อมูล
 $stmt1->close();
 $stmt2->close();
-$stmt->close();
 $conn->close();
