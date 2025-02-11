@@ -23,7 +23,7 @@ $reporter = 1;
 $status = 'รอดำเนินการ';
 
 // เพิ่มข้อมูลลงในตาราง car_report
-$stmt = $conn->prepare("INSERT INTO repair (ambulance_id, repair_staff_id, repair_date, repair_type, repair_item, repair_reason, repair_status ) VALUES (?, ?, ?, ?, ?, ?, ?)");
+$stmt = $conn->prepare("INSERT INTO repair (ambulance_id, repair_staff_id, repair_date, repair_type, repairing, repair_reason, repair_status ) VALUES (?, ?, ?, ?, ?, ?, ?)");
 $stmt->bind_param("iisssss", $car_number, $reporter, $date, $category , $device, $reason, $status);
 $stmt->execute();
 
