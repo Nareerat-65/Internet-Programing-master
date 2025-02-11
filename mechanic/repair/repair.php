@@ -100,17 +100,38 @@ $status_data = mysqli_fetch_all($status_query, MYSQLI_ASSOC);
                             <td><?php echo $rs_result['repair_item']; ?></td>
                             <td><?php echo $rs_result['repair_reason']; ?></td>
                             <td>
-                                <input type="date"
+                                <!-- ถ้าข้อมูล repair_success_datetime ในตาราง repair ไม่ใช่ค่าว่าง (ทำดำเนินการเสร็จแล้ว)-->
+                                <!-- ให้แสดงวันที่ซ่อมรายการนั้น ๆ เสร็จ -->
+                                <!-- ถ้าไม่ตรงตามเงื่อนไขด้านบน ให้สามารถเลือกวันเวลาเพื่ออัพเดตในฐานข้อมูลได้ -->
+                                <?php if ($rs_result['repair_success_datetime'] !== null) { ?>
+                                    <?php echo $rs_result['repair_success_datetime']; ?>
+                                <?php } else { ?>
+                                    <input type="datetime-local"
                                     value="<?php echo $rs_result['repair_success_datetime']; ?>"
                                     onchange="updateRepair(<?php echo $rs_result['repair_id']; ?>, this.value, 'date')">
+                                <?php } ?>
                             </td>
                             <td><?php echo $rs_result['repair_staff_id']; ?></td>
                             <td>
-                                <select onchange="updateRepair(<?php echo $rs_result['repair_id']; ?>, this.value, 'status')">
-                                    <option value="รออะไหล่" <?php echo ($rs_result['repair_status'] == 'รอดำเนินการ') ? 'selected' : ''; ?>>รอดำเนินการ</option>
-                                    <option value="กำลังดำเนินการซ่อม" <?php echo ($rs_result['repair_status'] == 'กำลังดำเนินการ') ? 'selected' : ''; ?>>กำลังดำเนินการ</option>
-                                    <option value="เสร็จสิ้น" <?php echo ($rs_result['repair_status'] == 'เสร็จสิ้น') ? 'selected' : ''; ?>>เสร็จสิ้น</option>
-                                </select>
+                                <!-- เมื่อถูกอัพเดตว่า "เสร็จสิ้น" จะ diable select -->
+                                <!-- เมื่อถูกอัพเดตว่า "กำลังดำเนินการ" จะ diable "กำลังดำเนินการ" -->
+                                <!-- เมื่อถูกอัพเดตว่า "รอดำเนินการ" จะแสดงตัวเลือกทุกอัน -->
+                                <?php if ($rs_result['repair_status'] == 'เสร็จสิ้น') { ?>
+                                    <select disabled ="updateRepair(<?php echo $rs_result['repair_id']; ?>, this.value, 'status')">
+                                        <option value="เสร็จสิ้น" <?php echo ($rs_result['repair_status'] == 'เสร็จสิ้น') ? 'selected' : ''; ?>>เสร็จสิ้น</option>
+                                    </select>
+                                <?php } elseif ($rs_result['repair_status'] == 'กำลังดำเนินการ') { ?>
+                                    <select onchange="updateRepair(<?php echo $rs_result['repair_id']; ?>, this.value, 'status')">
+                                        <option disabled value="กำลังดำเนินการ" <?php echo ($rs_result['repair_status'] == 'กำลังดำเนินการ') ? 'selected' : ''; ?>>กำลังดำเนินการ</option>
+                                        <option value="เสร็จสิ้น" <?php echo ($rs_result['repair_status'] == 'เสร็จสิ้น') ? 'selected' : ''; ?>>เสร็จสิ้น</option>
+                                    </select>
+                                <?php } else { ?>
+                                    <select onchange="updateRepair(<?php echo $rs_result['repair_id']; ?>, this.value, 'status')">
+                                        <option value="รอดำเนินการ" <?php echo ($rs_result['repair_status'] == 'รอดำเนินการ') ? 'selected' : ''; ?>>รอดำเนินการ</option>
+                                        <option value="กำลังดำเนินการ" <?php echo ($rs_result['repair_status'] == 'กำลังดำเนินการ') ? 'selected' : ''; ?>>กำลังดำเนินการ</option>
+                                        <option value="เสร็จสิ้น" <?php echo ($rs_result['repair_status'] == 'เสร็จสิ้น') ? 'selected' : ''; ?>>เสร็จสิ้น</option>
+                                    </select>
+                                <?php } ?>
                             </td>
                         </tr>
                     <?php } ?>
