@@ -51,13 +51,13 @@ table th {
     color: #333;
 }
 
-.save-button {
+.edit-button {
     display: flex;
     justify-content: right;
     
 }
 
-.save-button button {
+.edit-button button {
     background-color: #002060;
     color: white;
     border: none;
@@ -67,7 +67,7 @@ table th {
     font-size: 14px;
 }
 
-.save-button button:hover {
+.edit-button button:hover {
     background-color: #00509e;
 }
 

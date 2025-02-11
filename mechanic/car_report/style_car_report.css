@@ -59,8 +59,7 @@ form .car_report {
     border-radius: 8px;
     width: 90%;
     max-width: 650px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    margin-bottom: 50px;
+    margin-bottom: 30px;
 }
 
 form .form-group {
