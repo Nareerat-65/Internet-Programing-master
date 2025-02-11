@@ -97,7 +97,7 @@ $status_data = mysqli_fetch_all($status_query, MYSQLI_ASSOC);
                             <td><?php echo $rs_result['repair_date']; ?></td>
                             <td><?php echo $rs_result['ambulance_id']; ?></td>
                             <td><?php echo $rs_result['repair_type']; ?></td>
-                            <td><?php echo $rs_result['repair_item']; ?></td>
+                            <td><?php echo $rs_result['repairing']; ?></td>
                             <td><?php echo $rs_result['repair_reason']; ?></td>
                             <td>
                                 <!-- ถ้าข้อมูล repair_success_datetime ในตาราง repair ไม่ใช่ค่าว่าง (ทำดำเนินการเสร็จแล้ว)-->
