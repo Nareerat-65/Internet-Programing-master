@@ -6,10 +6,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const otherCauseRow = document.getElementById('other-cause-row');
     const otherCauseField = document.getElementById('other-cause');
 
-    form.addEventListener('submit', (event) => {
-        event.preventDefault();
-        window.location.href = 'emergency_report_success.html'; // เปลี่ยนหน้าไปยัง emergency_report_success.html
-    });
+    // form.addEventListener('submit', (event) => {
+    //     event.preventDefault();
+    //     window.location.href = 'emergency_report_success.html'; // เปลี่ยนหน้าไปยัง emergency_report_success.html
+    // });
 
     cancelButton.addEventListener('click', () => {
         form.reset(); // รีเซ็ตหน้าฟอร์ม

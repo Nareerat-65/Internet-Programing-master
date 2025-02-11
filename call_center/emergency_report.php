@@ -1,3 +1,10 @@
+<?php
+    include 'connect.php'; 
+    //เลือกเฉพาะรถที่มีระดับ 2 หรือ 3
+    $query_ambulance = mysqli_query($conn, "SELECT * FROM ambulance WHERE ambulance_level = '2' OR ambulance_level = '3'");
+    $ambulance_data = mysqli_fetch_all($query_ambulance, MYSQLI_ASSOC);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,10 +17,11 @@
 </head>
 
 <body>
+
     <div class="title">
         <h1>รายงานเคสฉุกเฉิน</h1>
     </div>
-    <form class="box">
+    <form action="process.php" method="post" class="box">
         <div class="row">
             <label for="contact">ผู้ติดต่อ</label>
             <input type="text" name="contact" id="contact" required>
@@ -32,7 +40,7 @@
 
         <div class="row">
             <label for="cause">สาเหตุ/อาการป่วย</label>
-            <select id="cause">
+            <select id="cause" name="cause" required>
                 <option value="" disabled selected>ระบุสาเหตุ</option>
                 <option value="อุบัติเหตุ">อุบัติเหตุ</option>
                 <option value="อาการป่วย">อาการป่วย</option>
@@ -46,7 +54,7 @@
 
         <div class="row">
             <label for="filter-zone-list">เขตที่เกิดเหตุ</label>
-            <select id="filter-zone-list" class="filter-select">
+            <select id="filter-zone-list" name="filter-zone-list" class="filter-select">
                 <option value="" selected hidden>กรุณาเลือกเขต</option>
                 <option value="พระนคร">พระนคร</option>
                 <option value="ดุสิต">ดุสิต</option>
@@ -105,8 +113,20 @@
         </div>
         <div class="row">
             <label for="end-point">สถานที่ปลายทาง</label>
-            <select id="hospital" required>
+            <select id="hospital" name="hospital" required>
                 <option value="" disabled selected>ระบุโรงพยาบาล</option>
+            </select>
+        </div>
+        <div class="row">
+            <label for="ambulance_id">รถพยาบาลที่ออกปฏิบัติงาน</label>
+            <select id="ambulance_id" name="ambulance_id" required>
+                <option value="" selected hidden>กรุณาเลือกรถ</option>
+                <!-- แสดงตัวเลือกแค่รถระดับ 2 หรือ 3 ตามที่ query มา-->
+                <?php foreach($ambulance_data as $row) { ?>
+                    <option value="<?php echo $row["ambulance_id"];?>">
+                        <?php echo $row["ambulance_id"];?>
+                    </option>
+                <?php } ?>
             </select>
         </div>
         <div class="button">

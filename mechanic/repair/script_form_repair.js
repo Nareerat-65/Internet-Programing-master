@@ -24,13 +24,17 @@ document.addEventListener('DOMContentLoaded', () => {
     reasonField.addEventListener('change', () => {
         if (reasonField.value === 'other') {
             otherCauseRow.style.display = 'block';
-            otherCauseField.required = true; // ทำให้ฟิลด์ข้อความเป็น required
-            noteField.disabled = false; // Enable the note field
+            otherCauseField.required = true;
+            noteField.disabled = false;
+            reasonField.name = ''; // ไม่ส่งค่าจาก select
+            otherCauseField.name = 'reason'; // ส่งค่าจาก input text แทน
         } else {
             otherCauseRow.style.display = 'none';
-            otherCauseField.required = false; // ทำให้ฟิลด์ข้อความไม่เป็น required
-            otherCauseField.value = ''; // ล้างค่าฟิลด์ข้อความ
-            noteField.disabled = true; // Disable the note field
+            otherCauseField.required = false;
+            otherCauseField.value = '';
+            noteField.disabled = true;
+            reasonField.name = 'reason';// ส่งค่าจาก select
+            otherCauseField.name = ''; 
         }
     });
 
@@ -40,17 +44,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (level === 'ระดับ 1') {
             numberOptions = `
-                <option value="ขค5678">ขค5678</option>
-                <option value="ตฎ1142">ตฎ1142</option>
+                <option value="2">ขค5678</option>
+                <option value="4">ตฎ1142</option>
             `;
         } else if (level === 'ระดับ 2') {
             numberOptions = `
-                <option value="กข1234">กข1234</option>
-                <option value="ลนณ886">ลนณ886</option>
-            `;    
+                <option value="1">กข1234</option>
+                <option value="5">ลนณ886</option>
+            `;
         } else if (level === 'ระดับ 3') {
             numberOptions = `
-                <option value="ฉช378">ฉช378</option>
+                <option value="3">ฉช378</option>
             `;
         }
         numberField.innerHTML = `<option value="" disabled selected>ระบุทะเบียนรถ</option>${numberOptions}`;
@@ -93,42 +97,22 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     cancelButton.addEventListener('click', () => {
-        window.location.href = 'repair.html';
+        window.location.href = 'repair.php';
     });
 });
+document.querySelector('.formReportRepair').addEventListener('submit', function (e) {
+    e.preventDefault();
 
-document.querySelector('.save-button').addEventListener('click', function(event) {
-    event.preventDefault(); // ป้องกันการ submit form
+    // ตรวจสอบว่าฟิลด์ที่จำเป็นถูกกรอกครบหรือไม่
+    const required = ['level', 'number', 'category', 'device', 'reason'];
+    const isEmpty = required.some(id => !document.getElementById(id).value);
 
-    const date = document.getElementById('currentDate').value;
-    const license = document.getElementById('number').value;
-    const category = document.getElementById('category').value;
-    const device = document.getElementById('device').value;
-    let reason = document.getElementById('reason').value;
-    const note = document.getElementById('note').value;
-    const driver = document.getElementById('reporter').value;
-
-    if (reason === 'other' && note) {
-        reason = `อื่นๆ: ${note}`;
-    }
-
-    if (!date || !license || !category || !device || !reason || !driver) {
-        alert('กรุณากรอกข้อมูลให้ครบทุกช่อง');
+    if (isEmpty) {
+        alert('กรุณากรอกข้อมูลให้ครบถ้วน');
         return;
     }
 
-    const repairData = {
-        date,
-        license,
-        category,
-        device,
-        reason,
-        driver
-    };
-
-    let repairs = JSON.parse(localStorage.getItem('repairs')) || [];
-    repairs.push(repairData);
-    localStorage.setItem('repairs', JSON.stringify(repairs));
-
-    window.location.href = 'repair.html';
+    // ถ้าข้อมูลครบถ้วน ให้ส่งฟอร์ม
+    this.submit();
 });
+//

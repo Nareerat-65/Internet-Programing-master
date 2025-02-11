@@ -45,3 +45,26 @@ body {
     font-family: Prompt; /* ใช้ฟอนต์ไทย */
     background-color: #f0f8ff; /* เปลี่ยนสีพื้นหลัง */
 }
+
+.legend {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+    text-align: right;
+    margin-right: 20px;
+    gap: 5px;
+}
+
+.legend span {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+}
+
+.amBooking {
+    background-color: #3498DB;
+}
+
+.evBooking {
+    background-color: #9B59B6;
+}

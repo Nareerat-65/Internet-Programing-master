@@ -20,7 +20,7 @@
         <h1 class="title">การแจ้งซ่อม</h1>
     </div>
 
-    <form action="" class="formReportRepair">
+    <form action="con_from.php" class="formReportRepair" method="post">
         <div class="container">
             <div class="form-container">
                 <div class="form-title">รายละเอียดการแจ้งซ่อม</div>
@@ -29,7 +29,7 @@
                     <div class="form-row1">
                         <div class="form-group1">
                             <label for="date">วันที่</label>
-                            <input type="date" id="currentDate" disabled>
+                            <input type="date" id="currentDate" name="currentDate" disabled>
                         </div>
                         <div class="form-group1">
                             <label for="level">ระดับรถ</label>
@@ -42,7 +42,7 @@
                         </div>
                         <div class="form-group1">
                             <label for="number">ทะเบียนรถ</label>
-                            <select id="number" required>
+                            <select id="number" name="car_number" required>
                                 <option value="" disabled selected>ระบุทะเบียนรถ</option>
                             </select>
                         </div>
@@ -51,7 +51,7 @@
                     <div class="form-row2">
                         <div class="form-group">
                             <label for="category">ประเภทการซ่อม</label>
-                            <select id="category" required>
+                            <select id="category" name="category" required>
                                 <option value="" disabled selected>ระบุประเภท</option>
                                 <option value="รถพยาบาล">รถพยาบาล</option>
                                 <option value="อุปกรณ์ทางการแพทย์">อุปกรณ์ทางการแพทย์</option>
@@ -59,29 +59,29 @@
                         </div>
                         <div class="form-group">
                             <label for="device">อะไหล่/อุปกรณ์</label>
-                            <select id="device" required>
+                            <select id="device" name="device" required>
                                 <option value="" disabled selected>ระบุอุปกรณ์</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="reason">สาเหตุ</label>
-                            <select id="reason" required>
+                            <select id="reason" name="reason" required>
                                 <option value="" disabled selected>สาเหตุ</option>
                             </select>
                         </div>
-                        <div class="form-group" id="other-cause-row" style="display: none;">
+                        <div class="form-group" id="other-cause-row"  style="display: none;">
                             <label for="note">ระบุสาเหตุ</label>
-                            <input type="text" name="note" id="note">
+                            <input type="text" name="reason" id="note">
                         </div>
                     </div>
                     <div class="form-group1">
                         <label for="reporter">ผู้รายงาน</label>
-                        <input type="text" id="reporter" value="นายเปรี้ยว แซ่บ" disabled>
+                        <input type="text" id="reporter" name="reporter" value="นายเปรี้ยว แซ่บ" disabled>
                     </div>
                 </div>
 
                 <div class="button-row">
-                    <button type="button" class="save-button">บันทึก</button>
+                    <button type="submit" class="save-button">บันทึก</button>
                     <button type="button" class="cancel-button" id="cancel-button">ยกเลิก</button>
                 </div>
             </div>
