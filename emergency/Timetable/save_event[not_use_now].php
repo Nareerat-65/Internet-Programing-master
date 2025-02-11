@@ -1,8 +1,11 @@
+// หน้านี้ยังไม่ได้ใช้งานจริง
+
+
 <?php
 date_default_timezone_set('Asia/Bangkok'); // ตั้งค่าโซนเวลา
 
 // เชื่อมต่อฐานข้อมูล
-$con = new mysqli('localhost', 'root', '1234', 'car_report');
+$con = new mysqli('localhost', 'root', '1234', 'intpro');
 if ($con->connect_error) {
     die('Connection Failed: ' . $con->connect_error);
 }
