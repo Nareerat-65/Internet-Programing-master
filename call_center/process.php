@@ -5,7 +5,7 @@
 <?php
 
 //เลือกให้ผู้กรอกข้อมูลเป็น callcenter_id = 1
-$callcenter_query = mysqli_query($conn, "SELECT callcenter_id FROM call_center WHERE callcenter_id = '1'");
+$callcenter_query = mysqli_query($conn, "SELECT callcenter_id FROM callcenter WHERE callcenter_id = '1'");
 $callcenter_row = mysqli_fetch_assoc($callcenter_query); //เก็บเป็น array 
 $callcenter_id = $callcenter_row['callcenter_id']; //เลือก callcenter_id จาก array 
 
@@ -28,11 +28,13 @@ $report_communicant = $_POST['contact'];
 $report_communicant_phone = $_POST['contact_number'];
 $report_patient_name = $_POST['patient_name'];
 $report_patient_age = $_POST['patient_age'];
+$report_patient_gender = $_POST['gender'];
+
 
 if (!mysqli_query(
     $conn,
-    "INSERT INTO emergency_case (callcenter_id, ambulance_id, accident_location, report_reason, hospital_waypoint, report_date, report_time, emergency_case_zone, report_communicant, report_communicant_phone, report_patient_name, report_patient_age) 
-    VALUES ('$callcenter_id', '$ambulance_id', '$accident_location', '$report_reason', '$hospital_waypoint', '$report_date', '$report_time', '$emergency_case_zone', '$report_communicant', '$report_communicant_phone', '$report_patient_name', '$report_patient_age')"
+    "INSERT INTO emergency_case (callcenter_id, ambulance_id, accident_location, report_reason, hospital_waypoint, report_date, report_time, emergency_case_zone, report_communicant, report_communicant_phone, report_patient_name, report_patient_gender, report_patient_age) 
+    VALUES ('$callcenter_id', '$ambulance_id', '$accident_location', '$report_reason', '$hospital_waypoint', '$report_date', '$report_time', '$emergency_case_zone', '$report_communicant', '$report_communicant_phone', '$report_patient_name','$report_patient_gender', '$report_patient_age')"
 )) {
     echo ("Error description: " . mysqli_error($conn)); //ส่งข้อมูลไม่สำเร็จให้แสดง error
 } else {

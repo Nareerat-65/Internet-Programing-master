@@ -37,6 +37,14 @@
             <label for="patient_age">อายุผู้ป่วย</label>
             <input type="number" name="patient_age" id="patient_age" required min="1">
         </div>
+        <div class="row">
+            <label for="gender">เพศผู้ป่วย</label>
+            <select id="gender" name="gender" required>
+                <option value="" disabled selected>ระบุเพศ</option>
+                <option value="ชาย">ชาย</option>
+                <option value="หญิง">หญิง</option>
+            </select>
+        </div>
 
         <div class="row">
             <label for="cause">สาเหตุ/อาการป่วย</label>

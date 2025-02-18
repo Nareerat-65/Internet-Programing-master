@@ -14,7 +14,7 @@
         <h2>บันทึกรายงานเสร็จสิ้น</h2>
     </div>
     <div class="reversed_button">
-        <button onclick="location.href='emergency_report.html'" type="button">ย้อนกลับ</button>
+        <button onclick="location.href='emergency_report.php'" type="button">ย้อนกลับ</button>
     </div>
 
 </body>
