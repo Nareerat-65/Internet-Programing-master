@@ -1,13 +1,16 @@
 <?php
 include 'con_repair.php';
 
-$query_result = mysqli_query($conn, "SELECT * FROM repair");
+// แก้ไข query ให้เพิ่มเงื่อนไข WHERE repair_status = 'รอดำเนินการ'
+$query_result = mysqli_query($conn, "SELECT * FROM repair WHERE repair_status = 'รอดำเนินการ'");
 $repair_data = mysqli_fetch_all($query_result, MYSQLI_ASSOC);
 
+// คงไว้เหมือนเดิมเพื่อใช้ในการกรอง
 $ambulance_query = mysqli_query($conn, "SELECT DISTINCT ambulance_id FROM repair ORDER BY ambulance_id");
 $ambulance_data = mysqli_fetch_all($ambulance_query, MYSQLI_ASSOC);
 
-$status_query = mysqli_query($conn, "SELECT DISTINCT repair_status FROM repair WHERE repair_status IS NOT NULL ORDER BY repair_status");
+// อาจจะไม่จำเป็นต้องมี query status แล้วเพราะจะแสดงแค่สถานะเดียว
+$status_query = mysqli_query($conn, "SELECT DISTINCT repair_status FROM repair WHERE repair_status = 'รอดำเนินการ'");
 $status_data = mysqli_fetch_all($status_query, MYSQLI_ASSOC);
 
 ?>
