@@ -51,34 +51,24 @@ function addRepair() {
   window.location.href = 'from_repair.html';
 }
 
-async function updateRepair(repairId, value, type) {
-    
-  const data = {
-      repair_id: repairId,
-      value: value,
-      type: type
-  };
-
-  try {
-      const response = await fetch('update_repair.php', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(data)
-      });
-
-      if (response.ok) {
-          // รีเฟรชตารางหลังจากอัพเดทข้อมูล
-          filterTable();
+function updateRepair(repairId, value, type) {
+  fetch('update_repair.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ repair_id: repairId, value: value, type: type })
+  }).then(response => response.json())
+    .then(data => {
+      if (data.status === 'success') {
+        location.reload();  // โหลดหน้าใหม่เพื่ออัปเดตข้อมูล
       } else {
-          alert('เกิดข้อผิดพลาดในการอัพเดทข้อมูล');
+        alert('เกิดข้อผิดพลาด: ' + data.message);
       }
-  } catch (error) {
-      console.error('Error:', error);
-      alert('เกิดข้อผิดพลาดในการเชื่อมต่อ');
-  }
+    });
 }
+function addRepair() {
+  window.location.href = "from_repair.php";
+}
+
 
 // function deleteRepair(index) {
 //     let repairs = JSON.parse(localStorage.getItem('repairs')) || [];

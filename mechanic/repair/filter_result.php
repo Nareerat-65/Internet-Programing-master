@@ -39,6 +39,9 @@ if (! empty($json_data['status'])) {
     $whereClauses[2] = "repair_status='$json_data[status]'";
 }
 
+$whereClauses[] = "repair_reason IS NOT NULL AND repair_reason <> ''";
+$whereClauses[] = "repair_status IN ('รอดำเนินการ', 'กำลังดำเนินการ')";
+
 //สร้าง string เก็บประโยค WHERE ตัวเต็มที่ได้จากการรวม $whereClauses แล้วเชื่อมด้วย AND
 $where = '';
 if (count($whereClauses) > 0) {

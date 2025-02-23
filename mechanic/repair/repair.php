@@ -1,16 +1,15 @@
 <?php
 include 'con_repair.php';
 
-// แก้ไข query ให้เพิ่มเงื่อนไข WHERE repair_status = 'รอดำเนินการ'
-$query_result = mysqli_query($conn, "SELECT * FROM repair WHERE repair_status = 'รอดำเนินการ'");
+// แก้ไข query ให้เพิ่มเงื่อนไข WHERE repair_status IN ('รอดำเนินการ', 'กำลังดำเนินการ') และ repair_reason ไม่เป็นค่าว่าง
+$query_result = mysqli_query($conn, "SELECT * FROM repair WHERE repair_status IN ('รอดำเนินการ', 'กำลังดำเนินการ')");
 $repair_data = mysqli_fetch_all($query_result, MYSQLI_ASSOC);
 
 // คงไว้เหมือนเดิมเพื่อใช้ในการกรอง
 $ambulance_query = mysqli_query($conn, "SELECT DISTINCT ambulance_id FROM repair ORDER BY ambulance_id");
 $ambulance_data = mysqli_fetch_all($ambulance_query, MYSQLI_ASSOC);
 
-// อาจจะไม่จำเป็นต้องมี query status แล้วเพราะจะแสดงแค่สถานะเดียว
-$status_query = mysqli_query($conn, "SELECT DISTINCT repair_status FROM repair WHERE repair_status = 'รอดำเนินการ'");
+$status_query = mysqli_query($conn, "SELECT DISTINCT repair_status FROM repair WHERE repair_status IN ('รอดำเนินการ', 'กำลังดำเนินการ')");
 $status_data = mysqli_fetch_all($status_query, MYSQLI_ASSOC);
 
 ?>
@@ -29,7 +28,7 @@ $status_data = mysqli_fetch_all($status_query, MYSQLI_ASSOC);
 <body>
     <nav>
         <ul class="menu">
-            <li><a href="..\car_report\car_report.php">รายงานสภาพรถพยาบาล</a></li>
+            <li><a href="..\\car_report\\car_report.php">รายงานสภาพรถพยาบาล</a></li>
             <li><a href="repair.php">การซ่อมอุปกรณ์และรถพยาบาล</a></li>
         </ul>
     </nav>
@@ -66,11 +65,8 @@ $status_data = mysqli_fetch_all($status_query, MYSQLI_ASSOC);
                     </div>
                     <div>
                         <div class="add-button">
-                            <button onclick="addRepair()">เพิ่มการแจ้งซ่อม +</button>
+                            <button type="button" onclick="addRepair()">เพิ่มการแจ้งซ่อม +</button>
                         </div>
-                        <!-- <div class="edit-button">
-                            <button onclick="saveRepair()">แก้ไขข้อมูล</button>
-                        </div> -->
                     </div>
                 </div>
             </div>
@@ -78,7 +74,6 @@ $status_data = mysqli_fetch_all($status_query, MYSQLI_ASSOC);
 
         <div>
             <table id="my-list">
-                <!-- my-list เป็น id ที่จะให้แสดงผลลัพธ์การกรองข้อมูล -->
                 <thead>
                     <tr>
                         <th>วันที่รับซ่อม</th>
@@ -92,9 +87,6 @@ $status_data = mysqli_fetch_all($status_query, MYSQLI_ASSOC);
                     </tr>
                 </thead>
                 <tbody id="repair-table-body">
-
-                    <!-- เมื่อเข้ามาครั้งแรก จะแสดงข้อมูลทั้งหมดจากตาราง repair -->
-
                     <?php foreach ($repair_data as $rs_result) { ?>
                         <tr>
                             <td><?php echo $rs_result['repair_date']; ?></td>
@@ -103,49 +95,28 @@ $status_data = mysqli_fetch_all($status_query, MYSQLI_ASSOC);
                             <td><?php echo $rs_result['repairing']; ?></td>
                             <td><?php echo $rs_result['repair_reason']; ?></td>
                             <td>
-                                <!-- ถ้าข้อมูล repair_success_datetime ในตาราง repair ไม่ใช่ค่าว่าง (ทำดำเนินการเสร็จแล้ว)-->
-                                <!-- ให้แสดงวันที่ซ่อมรายการนั้น ๆ เสร็จ -->
-                                <!-- ถ้าไม่ตรงตามเงื่อนไขด้านบน ให้สามารถเลือกวันเวลาเพื่ออัพเดตในฐานข้อมูลได้ -->
                                 <?php if ($rs_result['repair_success_datetime'] !== null) { ?>
                                     <?php echo $rs_result['repair_success_datetime']; ?>
                                 <?php } else { ?>
                                     <input type="datetime-local"
-                                    value="<?php echo $rs_result['repair_success_datetime']; ?>"
-                                    onchange="updateRepair(<?php echo $rs_result['repair_id']; ?>, this.value, 'date')">
+                                        value="<?php echo $rs_result['repair_success_datetime']; ?>"
+                                        onchange="updateRepair(<?php echo $rs_result['repair_id']; ?>, this.value, 'date')">
                                 <?php } ?>
                             </td>
                             <td><?php echo $rs_result['repair_staff_id']; ?></td>
                             <td>
-                                <!-- เมื่อถูกอัพเดตว่า "เสร็จสิ้น" จะ diable select -->
-                                <!-- เมื่อถูกอัพเดตว่า "กำลังดำเนินการ" จะ diable "กำลังดำเนินการ" -->
-                                <!-- เมื่อถูกอัพเดตว่า "รอดำเนินการ" จะแสดงตัวเลือกทุกอัน -->
-                                <?php if ($rs_result['repair_status'] == 'เสร็จสิ้น') { ?>
-                                    <select disabled ="updateRepair(<?php echo $rs_result['repair_id']; ?>, this.value, 'status')">
-                                        <option value="เสร็จสิ้น" <?php echo ($rs_result['repair_status'] == 'เสร็จสิ้น') ? 'selected' : ''; ?>>เสร็จสิ้น</option>
-                                    </select>
-                                <?php } elseif ($rs_result['repair_status'] == 'กำลังดำเนินการ') { ?>
-                                    <select onchange="updateRepair(<?php echo $rs_result['repair_id']; ?>, this.value, 'status')">
-                                        <option disabled value="กำลังดำเนินการ" <?php echo ($rs_result['repair_status'] == 'กำลังดำเนินการ') ? 'selected' : ''; ?>>กำลังดำเนินการ</option>
-                                        <option value="เสร็จสิ้น" <?php echo ($rs_result['repair_status'] == 'เสร็จสิ้น') ? 'selected' : ''; ?>>เสร็จสิ้น</option>
-                                    </select>
-                                <?php } else { ?>
-                                    <select onchange="updateRepair(<?php echo $rs_result['repair_id']; ?>, this.value, 'status')">
-                                        <option value="รอดำเนินการ" <?php echo ($rs_result['repair_status'] == 'รอดำเนินการ') ? 'selected' : ''; ?>>รอดำเนินการ</option>
-                                        <option value="กำลังดำเนินการ" <?php echo ($rs_result['repair_status'] == 'กำลังดำเนินการ') ? 'selected' : ''; ?>>กำลังดำเนินการ</option>
-                                        <option value="เสร็จสิ้น" <?php echo ($rs_result['repair_status'] == 'เสร็จสิ้น') ? 'selected' : ''; ?>>เสร็จสิ้น</option>
-                                    </select>
-                                <?php } ?>
+                                <select onchange="updateRepair(<?php echo $rs_result['repair_id']; ?>, this.value, 'status')">
+                                    <option value="รอดำเนินการ" <?php echo ($rs_result['repair_status'] == 'รอดำเนินการ') ? 'selected' : ''; ?>>รอดำเนินการ</option>
+                                    <option value="กำลังดำเนินการ" <?php echo ($rs_result['repair_status'] == 'กำลังดำเนินการ') ? 'selected' : ''; ?>>กำลังดำเนินการ</option>
+                                    <option value="เสร็จสิ้น" <?php echo ($rs_result['repair_status'] == 'เสร็จสิ้น') ? 'selected' : ''; ?>>เสร็จสิ้น</option>
+                                </select>
                             </td>
                         </tr>
                     <?php } ?>
-
                 </tbody>
             </table>
         </div>
-
-
     </div>
-
 </body>
 
 </html>

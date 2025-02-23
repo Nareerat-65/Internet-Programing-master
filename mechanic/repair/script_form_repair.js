@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
             otherCauseField.value = '';
             noteField.disabled = true;
             reasonField.name = 'reason';// ส่งค่าจาก select
-            otherCauseField.name = ''; 
+            otherCauseField.name = '';
         }
     });
 
@@ -67,9 +67,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (category === 'รถพยาบาล') {
             deviceOptions = `
+                <option value="ความสะอาด">ความสะอาด</option>
                 <option value="เครื่องยนต์">เครื่องยนต์</option>
-                <option value="ยาง">ยาง</option>
+                <option value="ล้อรถ">ล้อรถ</option>
+                <option value="ประตูรถ">ประตูรถ</option>
                 <option value="เบรก">เบรก</option>
+                <option value="ไฟรถ">ไฟรถ</option>
             `;
             reasonOptions = `
                 <option value="ชำรุด">ชำรุด</option>
@@ -78,12 +81,15 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
         } else if (category === 'อุปกรณ์ทางการแพทย์') {
             deviceOptions = `
-                <option value="AED">AED</option>
-                <option value="เตียง">เตียง</option>
+                <option value="เครื่องAED">เครื่องAED</option>
                 <option value="เครื่องช่วยหายใจ">เครื่องช่วยหายใจ</option>
-                <option value="เฝือกลม">เฝือกลม</option>
                 <option value="ถังออกซิเจน">ถังออกซิเจน</option>
+                <option value="เครื่องวัดความดัน">เครื่องวัดความดัน</option>
+                <option value="เครื่องวัดชีพจร">เครื่องวัดชีพจร</option>
+                <option value="เตียงพยาบาล">เตียงพยาบาล</option>
+                <option value="เปลสนาม">เปลสนาม</option>
                 <option value="อุปกรณ์ปฐมพยาบาล">อุปกรณ์ปฐมพยาบาล</option>
+                <option value="อุปกรณ์การดาม">อุปกรณ์การดาม</option>
             `;
             reasonOptions = `
                 <option value="ชำรุด">ชำรุด</option>

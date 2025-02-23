@@ -33,7 +33,7 @@ $report_patient_gender = $_POST['gender'];
 
 if (!mysqli_query(
     $conn,
-    "INSERT INTO emergency_case (callcenter_id, ambulance_id, accident_location, report_reason, hospital_waypoint, report_date, report_time, emergency_case_zone, report_communicant, report_communicant_phone, report_patient_name, report_patient_gender, report_patient_age) 
+    "INSERT INTO emergency_case_report (callcenter_id, ambulance_id, emergency_case_report_accident_location, emergency_case_report_reason, emergency_case_report_hospital_waypoint, emergency_case_report_date, emergency_case_report_time, emergency_case_report_zone, emergency_case_report_communicant, emergency_case_report_communicant_phone, emergency_case_report_patient_name, emergency_case_report_patient_gender, emergency_case_report_patient_age) 
     VALUES ('$callcenter_id', '$ambulance_id', '$accident_location', '$report_reason', '$hospital_waypoint', '$report_date', '$report_time', '$emergency_case_zone', '$report_communicant', '$report_communicant_phone', '$report_patient_name','$report_patient_gender', '$report_patient_age')"
 )) {
     echo ("Error description: " . mysqli_error($conn)); //ส่งข้อมูลไม่สำเร็จให้แสดง error

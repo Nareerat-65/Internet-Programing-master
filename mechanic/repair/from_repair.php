@@ -74,10 +74,6 @@
                             <input type="text" name="reason" id="note">
                         </div>
                     </div>
-                    <div class="form-group1">
-                        <label for="reporter">ผู้รายงาน</label>
-                        <input type="text" id="reporter" name="reporter" value="นายเปรี้ยว แซ่บ" disabled>
-                    </div>
                 </div>
 
                 <div class="button-row">
